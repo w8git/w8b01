@@ -19,18 +19,12 @@
         "id": "872b6df0aee54332",
         "type": "global-config",
         "name": "global-config",
-        "env": [
-            {
-                "name": "test",
-                "value": "{ test: \"one\"}",
-                "type": "json"
-            }
-        ]
+        "env": []
     },
     {
         "id": "1b4560745b99d6d2",
         "type": "sqlitedb",
-        "db": "main.db",
+        "db": "./main.db",
         "mode": "RWC"
     },
     {
@@ -98,5 +92,53 @@
         "x": 560,
         "y": 100,
         "wires": []
+    },
+    {
+        "id": "581c62edf85ef565",
+        "type": "inject",
+        "z": "7ace4e2a8fb04426",
+        "name": "",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "INSERT INTO test(fst) VALUES(1)",
+        "x": 200,
+        "y": 300,
+        "wires": [
+            [
+                "a24d712a0ae056ce"
+            ]
+        ]
+    },
+    {
+        "id": "6d9c30f9785edd00",
+        "type": "inject",
+        "z": "7ace4e2a8fb04426",
+        "name": "",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SELECT * FROM test",
+        "x": 160,
+        "y": 40,
+        "wires": [
+            [
+                "a24d712a0ae056ce"
+            ]
+        ]
     }
 ]
