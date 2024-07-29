@@ -337,11 +337,11 @@ module.exports = {
      * provided here will enable file-based context that flushes to disk every 30 seconds.
      * Refer to the documentation for further options: https://nodered.org/docs/api/context/
      */
-    //contextStorage: {
-    //    default: {
-    //        module:"localfilesystem"
-    //    },
-    //},
+    contextStorage: {
+        default: "memoryOnly",
+        memoryOnly: { module: 'memory' },
+        file: { module: 'localfilesystem' }
+    },
 
     /** `global.keys()` returns a list of all properties set in global context.
      * This allows them to be displayed in the Context Sidebar within the editor.
@@ -448,9 +448,9 @@ module.exports = {
                 /** other overrides can be set e.g. fontSize, fontFamily, fontLigatures etc.
                  * for the full list, see https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IStandaloneEditorConstructionOptions.html
                  */
-                //fontSize: 14,
-                //fontFamily: "Cascadia Code, Fira Code, Consolas, 'Courier New', monospace",
-                //fontLigatures: true,
+                fontSize: 18,
+                fontFamily: "Cascadia Code, Fira Code, Consolas, 'Courier New', monospace",
+                fontLigatures: true,
             }
         },
 

@@ -19,7 +19,13 @@
         "id": "872b6df0aee54332",
         "type": "global-config",
         "name": "global-config",
-        "env": []
+        "env": [
+            {
+                "name": "test",
+                "value": "{ test: \"one\"}",
+                "type": "json"
+            }
+        ]
     },
     {
         "id": "1b4560745b99d6d2",
