@@ -24,8 +24,124 @@
     {
         "id": "1b4560745b99d6d2",
         "type": "sqlitedb",
-        "db": "./main.db",
+        "db": "/data/main.db",
         "mode": "RWC"
+    },
+    {
+        "id": "120fbe7d325ebdf0",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "showPageTitle": true,
+        "navigationStyle": "default",
+        "titleBarStyle": "default"
+    },
+    {
+        "id": "8a591effa6f76af0",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "0449864c44d7bf39",
+        "type": "ui-page",
+        "name": "Конфигурация",
+        "ui": "120fbe7d325ebdf0",
+        "path": "/config",
+        "icon": "gear",
+        "layout": "grid",
+        "theme": "8a591effa6f76af0",
+        "order": 2,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "c6ead6288c8e4ee2",
+        "type": "ui-group",
+        "name": "My Group",
+        "page": "0449864c44d7bf39",
+        "width": "6",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "a147a6e84ccbe9f8",
+        "type": "ui-page",
+        "name": "Регистрация",
+        "ui": "120fbe7d325ebdf0",
+        "path": "/regs",
+        "icon": "key",
+        "layout": "grid",
+        "theme": "8a591effa6f76af0",
+        "order": 5,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "8eddb8e7ccadb20c",
+        "type": "ui-page",
+        "name": "Управление",
+        "ui": "120fbe7d325ebdf0",
+        "path": "/ctl",
+        "icon": "truck",
+        "layout": "grid",
+        "theme": "8a591effa6f76af0",
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "ea438148c209daf5",
+        "type": "ui-page",
+        "name": "Настройки",
+        "ui": "120fbe7d325ebdf0",
+        "path": "/settings",
+        "icon": "wrench",
+        "layout": "grid",
+        "theme": "8a591effa6f76af0",
+        "order": 3,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "2ddac257f0e96f9c",
+        "type": "ui-page",
+        "name": "Журнал",
+        "ui": "120fbe7d325ebdf0",
+        "path": "/log",
+        "icon": "flag",
+        "layout": "grid",
+        "theme": "8a591effa6f76af0",
+        "order": 4,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
     },
     {
         "id": "b3ca844d03d55cac",
@@ -35,6 +151,73 @@
         "info": "Слежение за взвешиваниями на статических полноразмерных автовесах",
         "x": 110,
         "y": 60,
+        "wires": []
+    },
+    {
+        "id": "80d45151b79b4576",
+        "type": "inject",
+        "z": "91419fc3ca0e10e3",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 140,
+        "wires": [
+            [
+                "5ce4f9ddf9cf0611",
+                "67cdba789c23cb43"
+            ]
+        ]
+    },
+    {
+        "id": "5ce4f9ddf9cf0611",
+        "type": "debug",
+        "z": "91419fc3ca0e10e3",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "67cdba789c23cb43",
+        "type": "ui-text",
+        "z": "91419fc3ca0e10e3",
+        "group": "c6ead6288c8e4ee2",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "counter",
+        "label": "text",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 500,
+        "y": 260,
         "wires": []
     },
     {
