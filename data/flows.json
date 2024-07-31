@@ -444,11 +444,12 @@
         "name": "ws driver client",
         "server": "70e1120c7440fcd4",
         "client": "",
-        "x": 140,
-        "y": 140,
+        "x": 100,
+        "y": 120,
         "wires": [
             [
-                "ced30b7a66c95c18"
+                "9d5f5cfc3fd5c0cf",
+                "63bd7e9d772fa1df"
             ]
         ]
     },
@@ -474,8 +475,330 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 380,
+        "x": 600,
         "y": 140,
         "wires": []
+    },
+    {
+        "id": "9d5f5cfc3fd5c0cf",
+        "type": "function",
+        "z": "cc807d464c2b92f1",
+        "name": "function 1",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 220,
+        "wires": [
+            [
+                "ced30b7a66c95c18"
+            ]
+        ]
+    },
+    {
+        "id": "faad34d45b686138",
+        "type": "inject",
+        "z": "cc807d464c2b92f1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"event\":\"license\",\"hid\":\"1257667743\",\"registered\":true,\"err\":\"\"}",
+        "payloadType": "str",
+        "x": 180,
+        "y": 380,
+        "wires": [
+            [
+                "63bd7e9d772fa1df"
+            ]
+        ]
+    },
+    {
+        "id": "76064a359eea9839",
+        "type": "debug",
+        "z": "cc807d464c2b92f1",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "63bd7e9d772fa1df",
+        "type": "json",
+        "z": "cc807d464c2b92f1",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": true,
+        "x": 390,
+        "y": 480,
+        "wires": [
+            [
+                "12c34a72229741f0"
+            ]
+        ]
+    },
+    {
+        "id": "209fb49f3449e3f1",
+        "type": "change",
+        "z": "cc807d464c2b92f1",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "lic.hid",
+                "pt": "global",
+                "to": "payload.hid",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "lic.registered",
+                "pt": "global",
+                "to": "payload.registered",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "lic.errmsg",
+                "pt": "global",
+                "to": "payload.err",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 780,
+        "y": 400,
+        "wires": [
+            [
+                "76064a359eea9839"
+            ]
+        ]
+    },
+    {
+        "id": "12c34a72229741f0",
+        "type": "switch",
+        "z": "cc807d464c2b92f1",
+        "name": "",
+        "property": "payload.event",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "license",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "err",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 530,
+        "y": 580,
+        "wires": [
+            [
+                "209fb49f3449e3f1",
+                "50ed919b4e48103f",
+                "34c31c254ac23434",
+                "681ff75b06bc6749"
+            ],
+            [
+                "381261f4f41c8fe5"
+            ]
+        ]
+    },
+    {
+        "id": "381261f4f41c8fe5",
+        "type": "debug",
+        "z": "cc807d464c2b92f1",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "af3596e77ab87af8",
+        "type": "ui-text",
+        "z": "cc807d464c2b92f1",
+        "group": "8b5a10d6cb022220",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "hid",
+        "label": "HID компьютера",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 1090,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "15c8c6c6f9af0f24",
+        "type": "ui-text",
+        "z": "cc807d464c2b92f1",
+        "group": "8b5a10d6cb022220",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "errmsg",
+        "label": "Ошибка активации",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 1100,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "6b7debbe6d1ea598",
+        "type": "ui-switch",
+        "z": "cc807d464c2b92f1",
+        "name": "registered",
+        "label": "Лицензия активирована",
+        "group": "8b5a10d6cb022220",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "className": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 1100,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "50ed919b4e48103f",
+        "type": "change",
+        "z": "cc807d464c2b92f1",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.hid",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 540,
+        "wires": [
+            [
+                "af3596e77ab87af8"
+            ]
+        ]
+    },
+    {
+        "id": "34c31c254ac23434",
+        "type": "change",
+        "z": "cc807d464c2b92f1",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.err",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 600,
+        "wires": [
+            [
+                "15c8c6c6f9af0f24"
+            ]
+        ]
+    },
+    {
+        "id": "681ff75b06bc6749",
+        "type": "change",
+        "z": "cc807d464c2b92f1",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.registered",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 660,
+        "wires": [
+            [
+                "6b7debbe6d1ea598"
+            ]
+        ]
     }
 ]
