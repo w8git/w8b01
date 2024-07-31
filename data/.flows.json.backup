@@ -2,7 +2,7 @@
     {
         "id": "91419fc3ca0e10e3",
         "type": "tab",
-        "label": "Поток 1",
+        "label": "html",
         "disabled": false,
         "info": "",
         "env": []
@@ -11,6 +11,14 @@
         "id": "7ace4e2a8fb04426",
         "type": "tab",
         "label": "DB",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "cc807d464c2b92f1",
+        "type": "tab",
+        "label": "ws",
         "disabled": false,
         "info": "",
         "env": []
@@ -66,7 +74,7 @@
         "name": "Конфигурация",
         "ui": "120fbe7d325ebdf0",
         "path": "/config",
-        "icon": "gear",
+        "icon": "cog",
         "layout": "grid",
         "theme": "8a591effa6f76af0",
         "order": 2,
@@ -144,6 +152,48 @@
         "disabled": "false"
     },
     {
+        "id": "b61aadbc9f2ccaad",
+        "type": "websocket-client",
+        "path": "ws://127.0.0.1:19023",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "8b5a10d6cb022220",
+        "type": "ui-group",
+        "name": "Лицензия",
+        "page": "a147a6e84ccbe9f8",
+        "width": "3",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "eebad01a5b89838a",
+        "type": "ui-group",
+        "name": "Активация",
+        "page": "a147a6e84ccbe9f8",
+        "width": "3",
+        "height": "1",
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "70e1120c7440fcd4",
+        "type": "websocket-listener",
+        "path": "wss://echo.websocket.org",
+        "wholemsg": "false"
+    },
+    {
         "id": "b3ca844d03d55cac",
         "type": "comment",
         "z": "91419fc3ca0e10e3",
@@ -167,14 +217,14 @@
                 "vt": "str"
             }
         ],
-        "repeat": "3",
+        "repeat": "",
         "crontab": "",
-        "once": true,
+        "once": false,
         "onceDelay": 0.1,
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 150,
+        "x": 140,
         "y": 140,
         "wires": [
             [
@@ -218,6 +268,69 @@
         "className": "",
         "x": 500,
         "y": 260,
+        "wires": []
+    },
+    {
+        "id": "5af8e021fc11ae94",
+        "type": "ui-form",
+        "z": "91419fc3ca0e10e3",
+        "name": "",
+        "group": "eebad01a5b89838a",
+        "label": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Серийный номер",
+                "key": "serialno",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Код активации",
+                "key": "act_key",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "serialno": "",
+            "act_key": ""
+        },
+        "payload": "",
+        "submit": "Готово",
+        "cancel": "Отмена",
+        "resetOnSubmit": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "passthru": false,
+        "x": 150,
+        "y": 420,
+        "wires": [
+            [
+                "07cdef9577239405"
+            ]
+        ]
+    },
+    {
+        "id": "07cdef9577239405",
+        "type": "debug",
+        "z": "91419fc3ca0e10e3",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 420,
         "wires": []
     },
     {
@@ -323,5 +436,46 @@
                 "a24d712a0ae056ce"
             ]
         ]
+    },
+    {
+        "id": "62d68942cc88779e",
+        "type": "websocket in",
+        "z": "cc807d464c2b92f1",
+        "name": "ws driver client",
+        "server": "70e1120c7440fcd4",
+        "client": "",
+        "x": 140,
+        "y": 140,
+        "wires": [
+            [
+                "ced30b7a66c95c18"
+            ]
+        ]
+    },
+    {
+        "id": "b05c9c9f0657ede7",
+        "type": "comment",
+        "z": "cc807d464c2b92f1",
+        "name": "обмен с оборудованием",
+        "info": "",
+        "x": 170,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "ced30b7a66c95c18",
+        "type": "debug",
+        "z": "cc807d464c2b92f1",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 140,
+        "wires": []
     }
 ]

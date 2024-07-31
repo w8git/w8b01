@@ -4,14 +4,8 @@ services:
   node-red:
     image: nodered/node-red:latest
     container_name: w8box-watcher-01
+    network_mode: host
     environment:
       - TZ=Europe/Moscow
-    ports:
-      - "1880:1880"
-    networks:
-      - node-red-net
     volumes:
       - ./data:/data
-
-networks:
-  node-red-net:
