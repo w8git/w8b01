@@ -102,6 +102,105 @@
         "color": "#DDAA99"
     },
     {
+        "id": "3142b3093d07a5c6",
+        "type": "subflow",
+        "name": "Subflow DB",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 60,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "a24d712a0ae056ce"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 360,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "a24d712a0ae056ce",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "7184709957891172",
+        "type": "subflow",
+        "name": "Subflow DB LOG",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 80,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "3e9e8ce0255d6735"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 580,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "56433f3495193ab4",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "508d23eca865e758",
+        "type": "subflow",
+        "name": "Subflow DB ERR LOG",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 80,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "8e8b91e440ef3817"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 540,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "da1434a88a5672df",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
         "id": "872b6df0aee54332",
         "type": "global-config",
         "name": "global-config",
@@ -413,6 +512,126 @@
         ]
     },
     {
+        "id": "a24d712a0ae056ce",
+        "type": "sqlite",
+        "z": "3142b3093d07a5c6",
+        "mydb": "1b4560745b99d6d2",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "main",
+        "x": 190,
+        "y": 80,
+        "wires": [
+            [
+                "d6b87df0cd649863"
+            ]
+        ]
+    },
+    {
+        "id": "d6b87df0cd649863",
+        "type": "debug",
+        "z": "3142b3093d07a5c6",
+        "name": "debug DB",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "56433f3495193ab4",
+        "type": "sqlite",
+        "z": "7184709957891172",
+        "mydb": "1b4560745b99d6d2",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "main",
+        "x": 390,
+        "y": 80,
+        "wires": [
+            [
+                "f05c59356c6b4c13"
+            ]
+        ]
+    },
+    {
+        "id": "3e9e8ce0255d6735",
+        "type": "function",
+        "z": "7184709957891172",
+        "name": "function 2",
+        "func": "let ev_gr = msg.payload.ev_gr || 'unkn';\nlet ev_type = msg.payload.ev_type || 'info';\nlet ev_msg = msg.payload.ev_msg || '??';\n\nmsg.topic = 'INSERT INTO \"event_log\" (\"event_at\",\"event_group\",\"event_type\",\"event_msg\") VALUES(datetime(\"now\"), $val1, $val2, $val3)';\nmsg.payload = [ev_gr, ev_type, ev_msg];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 80,
+        "wires": [
+            [
+                "56433f3495193ab4"
+            ]
+        ]
+    },
+    {
+        "id": "f05c59356c6b4c13",
+        "type": "debug",
+        "z": "7184709957891172",
+        "name": "debug DB LOG",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "da1434a88a5672df",
+        "type": "sqlite",
+        "z": "508d23eca865e758",
+        "mydb": "1b4560745b99d6d2",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "main",
+        "x": 430,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8e8b91e440ef3817",
+        "type": "function",
+        "z": "508d23eca865e758",
+        "name": "function 3",
+        "func": "let ev_gr = msg.payload.ev_gr || 'unkn';\nlet err = msg.error || {};\nlet emsg = err.message || '??';\nlet src = err.source || {};\nlet eid = src.id || '?';\nlet etype = src.type || '?';\n\nmsg.topic = 'INSERT INTO \"event_log\" (\"event_at\",\"event_group\",\"event_type\",\"event_msg\") VALUES(datetime(\"now\"), $val1, $val2, $val3)';\nmsg.payload = [ev_gr, 'err', emsg + ' (id ' + eid + ', type ' + etype + ')'];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 80,
+        "wires": [
+            [
+                "da1434a88a5672df"
+            ]
+        ]
+    },
+    {
         "id": "b3ca844d03d55cac",
         "type": "comment",
         "z": "91419fc3ca0e10e3",
@@ -428,7 +647,7 @@
         "z": "91419fc3ca0e10e3",
         "name": "",
         "group": "eebad01a5b89838a",
-        "label": "Активация драйвера",
+        "label": "",
         "order": 1,
         "width": 0,
         "height": 0,
@@ -565,7 +784,7 @@
         "id": "497045853487ebee",
         "type": "inject",
         "z": "7ace4e2a8fb04426",
-        "name": "CREATE TABLE",
+        "name": "check event log",
         "props": [
             {
                 "p": "topic",
@@ -574,70 +793,14 @@
         ],
         "repeat": "",
         "crontab": "",
-        "once": false,
+        "once": true,
         "onceDelay": 0.1,
-        "topic": "CREATE TABLE test(fst INT, timestamp TEXT)",
-        "x": 200,
-        "y": 100,
+        "topic": "CREATE TABLE IF NOT EXISTS \"event_log\" (\"id\" INTEGER NOT NULL, \"event_at\" TEXT NOT NULL, \"event_group\" TEXT NOT NULL, \"event_type\" TEXT NOT NULL, \"event_msg\" TEXT, PRIMARY KEY(\"id\" AUTOINCREMENT))",
+        "x": 160,
+        "y": 180,
         "wires": [
             [
-                "a24d712a0ae056ce"
-            ]
-        ]
-    },
-    {
-        "id": "a24d712a0ae056ce",
-        "type": "sqlite",
-        "z": "7ace4e2a8fb04426",
-        "mydb": "1b4560745b99d6d2",
-        "sqlquery": "msg.topic",
-        "sql": "",
-        "name": "main",
-        "x": 390,
-        "y": 100,
-        "wires": [
-            [
-                "d6b87df0cd649863"
-            ]
-        ]
-    },
-    {
-        "id": "d6b87df0cd649863",
-        "type": "debug",
-        "z": "7ace4e2a8fb04426",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 560,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "581c62edf85ef565",
-        "type": "inject",
-        "z": "7ace4e2a8fb04426",
-        "name": "",
-        "props": [
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "INSERT INTO test(fst) VALUES(1)",
-        "x": 200,
-        "y": 300,
-        "wires": [
-            [
-                "a24d712a0ae056ce"
+                "ae55efe4f12608d7"
             ]
         ]
     },
@@ -645,7 +808,108 @@
         "id": "6d9c30f9785edd00",
         "type": "inject",
         "z": "7ace4e2a8fb04426",
+        "name": "check user table",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "CREATE TABLE IF NOT EXISTS \"users\" (\"user_login\"\tTEXT NOT NULL UNIQUE, \"user_psw\" TEXT NOT NULL, \"user_name\" TEXT, PRIMARY KEY(\"user_login\"))",
+        "payload": "CREATE TABLE IF NOT EXISTS \"users\" (\"user_login\"\tTEXT NOT NULL UNIQUE, \"user_psw\" TEXT NOT NULL, \"user_name\" TEXT, PRIMARY KEY(\"user_login\"))",
+        "payloadType": "str",
+        "x": 170,
+        "y": 120,
+        "wires": [
+            [
+                "ae55efe4f12608d7"
+            ]
+        ]
+    },
+    {
+        "id": "ae55efe4f12608d7",
+        "type": "subflow:3142b3093d07a5c6",
+        "z": "7ace4e2a8fb04426",
         "name": "",
+        "x": 530,
+        "y": 120,
+        "wires": [
+            [
+                "21d35252c2a27db7"
+            ]
+        ]
+    },
+    {
+        "id": "817060cb9a987c52",
+        "type": "comment",
+        "z": "7ace4e2a8fb04426",
+        "name": "проверка БД при старте",
+        "info": "",
+        "x": 150,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "0de577e91e7f460b",
+        "type": "catch",
+        "z": "7ace4e2a8fb04426",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 130,
+        "y": 400,
+        "wires": [
+            [
+                "d4360334d8ae6420"
+            ]
+        ]
+    },
+    {
+        "id": "21d35252c2a27db7",
+        "type": "debug",
+        "z": "7ace4e2a8fb04426",
+        "name": "debug DB INIT",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "d4360334d8ae6420",
+        "type": "debug",
+        "z": "7ace4e2a8fb04426",
+        "name": "debug DB ERR",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "1832f7c1c581976c",
+        "type": "inject",
+        "z": "7ace4e2a8fb04426",
+        "name": "check event log",
         "props": [
             {
                 "p": "topic",
@@ -654,28 +918,93 @@
         ],
         "repeat": "",
         "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "SELECT * FROM test",
+        "once": true,
+        "onceDelay": "1.1",
+        "topic": "CREATE INDEX IF NOT EXISTS \"event_log_at_idx\" ON \"event_log\" ( \t\"event_at\"\tASC )",
         "x": 160,
-        "y": 40,
+        "y": 240,
         "wires": [
             [
-                "a24d712a0ae056ce"
+                "ae55efe4f12608d7"
             ]
         ]
+    },
+    {
+        "id": "26a91546b38305e7",
+        "type": "inject",
+        "z": "7ace4e2a8fb04426",
+        "name": "лог старта",
+        "props": [
+            {
+                "p": "payload.ev_gr",
+                "v": "app",
+                "vt": "str"
+            },
+            {
+                "p": "payload.ev_type",
+                "v": "info",
+                "vt": "str"
+            },
+            {
+                "p": "payload.ev_msg",
+                "v": "Старт системы",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1.5",
+        "topic": "",
+        "x": 150,
+        "y": 320,
+        "wires": [
+            [
+                "8c37d8280b1d3228"
+            ]
+        ]
+    },
+    {
+        "id": "8c37d8280b1d3228",
+        "type": "subflow:7184709957891172",
+        "z": "7ace4e2a8fb04426",
+        "name": "",
+        "x": 340,
+        "y": 320,
+        "wires": [
+            [
+                "711cc292a0a57007"
+            ]
+        ]
+    },
+    {
+        "id": "711cc292a0a57007",
+        "type": "debug",
+        "z": "7ace4e2a8fb04426",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 320,
+        "wires": []
     },
     {
         "id": "3e39f247429d5ab7",
         "type": "subflow:14b0dde0fa1ebbfd",
         "z": "6db3e9ae8a30bde3",
         "name": "Read version",
-        "x": 330,
+        "x": 530,
         "y": 360,
         "wires": [
             [
                 "304e9924d69f6674",
-                "d17a7fcf256dd226"
+                "d17a7fcf256dd226",
+                "24be9f0f0d07a82d"
             ]
         ]
     },
@@ -696,7 +1025,7 @@
                 "type": "str"
             }
         ],
-        "x": 350,
+        "x": 530,
         "y": 200,
         "wires": [
             [
@@ -720,12 +1049,12 @@
         ],
         "repeat": "",
         "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
+        "once": true,
+        "onceDelay": "2.2",
         "topic": "",
         "payload": "version",
         "payloadType": "str",
-        "x": 110,
+        "x": 120,
         "y": 360,
         "wires": [
             [
@@ -749,12 +1078,12 @@
         ],
         "repeat": "",
         "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
+        "once": true,
+        "onceDelay": "2.1",
         "topic": "",
         "payload": "license",
         "payloadType": "str",
-        "x": 110,
+        "x": 120,
         "y": 200,
         "wires": [
             [
@@ -774,8 +1103,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 520,
-        "y": 300,
+        "x": 720,
+        "y": 360,
         "wires": []
     },
     {
@@ -790,8 +1119,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 860,
-        "y": 120,
+        "x": 720,
+        "y": 140,
         "wires": []
     },
     {
@@ -894,8 +1223,8 @@
         "fontSize": 16,
         "color": "#717171",
         "className": "",
-        "x": 1250,
-        "y": 300,
+        "x": 1230,
+        "y": 260,
         "wires": []
     },
     {
@@ -915,8 +1244,8 @@
         "fontSize": 16,
         "color": "#d50101",
         "className": "",
-        "x": 1260,
-        "y": 340,
+        "x": 1240,
+        "y": 320,
         "wires": []
     },
     {
@@ -942,8 +1271,8 @@
         "offvalueType": "bool",
         "officon": "",
         "offcolor": "",
-        "x": 1260,
-        "y": 400,
+        "x": 1240,
+        "y": 380,
         "wires": [
             []
         ]
@@ -1048,8 +1377,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 710,
-        "y": 460,
+        "x": 750,
+        "y": 500,
         "wires": [
             [
                 "dadcc6092c54a57d",
@@ -1090,7 +1419,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 970,
+        "x": 960,
         "y": 440,
         "wires": []
     },
@@ -1100,12 +1429,141 @@
         "z": "6db3e9ae8a30bde3",
         "name": "link RD LIC",
         "links": [],
-        "x": 205,
-        "y": 260,
+        "x": 405,
+        "y": 160,
         "wires": [
             [
                 "99e69eb2f47eacfc"
             ]
+        ]
+    },
+    {
+        "id": "64c2b1b64711a65f",
+        "type": "catch",
+        "z": "6db3e9ae8a30bde3",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 110,
+        "y": 460,
+        "wires": [
+            [
+                "04aeacb41635b1d8",
+                "ec8d03ef123ae2b7",
+                "f64c8a6b08ce57a0"
+            ]
+        ]
+    },
+    {
+        "id": "04aeacb41635b1d8",
+        "type": "delay",
+        "z": "6db3e9ae8a30bde3",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "4",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 290,
+        "y": 460,
+        "wires": [
+            [
+                "99e69eb2f47eacfc",
+                "3e39f247429d5ab7"
+            ]
+        ]
+    },
+    {
+        "id": "ec8d03ef123ae2b7",
+        "type": "debug",
+        "z": "6db3e9ae8a30bde3",
+        "name": "http catch",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 280,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "f64c8a6b08ce57a0",
+        "type": "change",
+        "z": "6db3e9ae8a30bde3",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.ev_gr",
+                "pt": "msg",
+                "to": "http",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 350,
+        "y": 540,
+        "wires": [
+            [
+                "0756407506ddb788"
+            ]
+        ]
+    },
+    {
+        "id": "0756407506ddb788",
+        "type": "subflow:508d23eca865e758",
+        "z": "6db3e9ae8a30bde3",
+        "name": "",
+        "x": 340,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "24be9f0f0d07a82d",
+        "type": "function",
+        "z": "6db3e9ae8a30bde3",
+        "name": "function 4",
+        "func": "msg.payload.ev_gr   = 'drv';\nmsg.payload.ev_type = 'info';\nmsg.payload.ev_msg  = 'Подключение к драйверу, в.' + msg.payload.value;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 600,
+        "wires": [
+            [
+                "ad9c5ad0ebcabc63"
+            ]
+        ]
+    },
+    {
+        "id": "ad9c5ad0ebcabc63",
+        "type": "subflow:7184709957891172",
+        "z": "6db3e9ae8a30bde3",
+        "name": "",
+        "x": 860,
+        "y": 600,
+        "wires": [
+            []
         ]
     }
 ]
