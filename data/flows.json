@@ -24,6 +24,14 @@
         "env": []
     },
     {
+        "id": "ecf6b12423f1e7cb",
+        "type": "tab",
+        "label": "init",
+        "disabled": false,
+        "info": "Действия при старте",
+        "env": []
+    },
+    {
         "id": "14b0dde0fa1ebbfd",
         "type": "subflow",
         "name": "Subflow HTTP GET",
@@ -248,13 +256,13 @@
     {
         "id": "0449864c44d7bf39",
         "type": "ui-page",
-        "name": "Конфигурация",
+        "name": "Конфигурация оборудования",
         "ui": "120fbe7d325ebdf0",
-        "path": "/config",
+        "path": "/hwconfig",
         "icon": "cog",
         "layout": "grid",
         "theme": "8a591effa6f76af0",
-        "order": 2,
+        "order": 3,
         "className": "",
         "visible": "true",
         "disabled": "false"
@@ -281,7 +289,7 @@
         "icon": "key",
         "layout": "grid",
         "theme": "8a591effa6f76af0",
-        "order": 5,
+        "order": 6,
         "className": "",
         "visible": "true",
         "disabled": "false"
@@ -303,13 +311,13 @@
     {
         "id": "ea438148c209daf5",
         "type": "ui-page",
-        "name": "Настройки",
+        "name": "Настройки оборудования",
         "ui": "120fbe7d325ebdf0",
-        "path": "/settings",
-        "icon": "wrench",
+        "path": "/hwparams",
+        "icon": "cogs",
         "layout": "grid",
         "theme": "8a591effa6f76af0",
-        "order": 3,
+        "order": 4,
         "className": "",
         "visible": "true",
         "disabled": "false"
@@ -323,7 +331,7 @@
         "icon": "flag",
         "layout": "grid",
         "theme": "8a591effa6f76af0",
-        "order": 4,
+        "order": 5,
         "className": "",
         "visible": "true",
         "disabled": "false"
@@ -371,6 +379,33 @@
         "wholemsg": "false"
     },
     {
+        "id": "c9f35d8bafef0704",
+        "type": "ui-page",
+        "name": "Настройки",
+        "ui": "120fbe7d325ebdf0",
+        "path": "/settings",
+        "icon": "wrench",
+        "layout": "grid",
+        "theme": "8a591effa6f76af0",
+        "order": 2,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "ab4df42e6de32b4e",
+        "type": "ui-group",
+        "name": "Настройки системы",
+        "page": "c9f35d8bafef0704",
+        "width": "4",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
         "id": "67f104891bac4664",
         "type": "http request",
         "z": "14b0dde0fa1ebbfd",
@@ -389,9 +424,7 @@
         "x": 630,
         "y": 80,
         "wires": [
-            [
-                "69eb4a0d2f7235cb"
-            ]
+            []
         ]
     },
     {
@@ -424,43 +457,9 @@
         "y": 80,
         "wires": [
             [
-                "67f104891bac4664",
-                "05a12c67be5b619b"
+                "67f104891bac4664"
             ]
         ]
-    },
-    {
-        "id": "05a12c67be5b619b",
-        "type": "debug",
-        "z": "14b0dde0fa1ebbfd",
-        "name": "debug 9",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 540,
-        "y": 180,
-        "wires": []
-    },
-    {
-        "id": "69eb4a0d2f7235cb",
-        "type": "debug",
-        "z": "14b0dde0fa1ebbfd",
-        "name": "debug 10",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 780,
-        "y": 180,
-        "wires": []
     },
     {
         "id": "77589d7ce0cc5889",
@@ -533,7 +532,7 @@
         "z": "3142b3093d07a5c6",
         "name": "debug DB",
         "active": true,
-        "tosidebar": true,
+        "tosidebar": false,
         "console": false,
         "tostatus": false,
         "complete": "payload",
@@ -555,9 +554,7 @@
         "x": 390,
         "y": 80,
         "wires": [
-            [
-                "f05c59356c6b4c13"
-            ]
+            []
         ]
     },
     {
@@ -579,23 +576,6 @@
                 "56433f3495193ab4"
             ]
         ]
-    },
-    {
-        "id": "f05c59356c6b4c13",
-        "type": "debug",
-        "z": "7184709957891172",
-        "name": "debug DB LOG",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 610,
-        "y": 180,
-        "wires": []
     },
     {
         "id": "da1434a88a5672df",
@@ -695,10 +675,11 @@
         "z": "91419fc3ca0e10e3",
         "name": "debug 4",
         "active": true,
-        "tosidebar": true,
+        "tosidebar": false,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 360,
@@ -877,7 +858,7 @@
         "z": "7ace4e2a8fb04426",
         "name": "debug DB INIT",
         "active": true,
-        "tosidebar": true,
+        "tosidebar": false,
         "console": false,
         "tostatus": false,
         "complete": "payload",
@@ -983,10 +964,11 @@
         "z": "7ace4e2a8fb04426",
         "name": "debug 12",
         "active": true,
-        "tosidebar": true,
+        "tosidebar": false,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 520,
@@ -1097,10 +1079,11 @@
         "z": "6db3e9ae8a30bde3",
         "name": "debug 7",
         "active": true,
-        "tosidebar": true,
+        "tosidebar": false,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 720,
@@ -1113,59 +1096,16 @@
         "z": "6db3e9ae8a30bde3",
         "name": "debug 8",
         "active": true,
-        "tosidebar": true,
+        "tosidebar": false,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 720,
         "y": 140,
         "wires": []
-    },
-    {
-        "id": "f30564bcca8395e5",
-        "type": "inject",
-        "z": "6db3e9ae8a30bde3",
-        "name": "",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 130,
-        "y": 80,
-        "wires": [
-            [
-                "bf299791a498a150"
-            ]
-        ]
-    },
-    {
-        "id": "bf299791a498a150",
-        "type": "change",
-        "z": "6db3e9ae8a30bde3",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload.drvhost",
-                "pt": "global",
-                "to": "http://127.0.0.1:19017/api/v1",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 500,
-        "y": 80,
-        "wires": [
-            []
-        ]
     },
     {
         "id": "42d7a8240fab6886",
@@ -1460,7 +1400,7 @@
         "z": "6db3e9ae8a30bde3",
         "name": "",
         "pauseType": "delay",
-        "timeout": "4",
+        "timeout": "10",
         "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
@@ -1471,7 +1411,7 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 290,
+        "x": 300,
         "y": 460,
         "wires": [
             [
@@ -1562,6 +1502,294 @@
         "name": "",
         "x": 860,
         "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f30564bcca8395e5",
+        "type": "inject",
+        "z": "ecf6b12423f1e7cb",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 130,
+        "y": 120,
+        "wires": [
+            [
+                "836c5f2a673914a4"
+            ]
+        ]
+    },
+    {
+        "id": "d825a23d535ef44a",
+        "type": "comment",
+        "z": "ecf6b12423f1e7cb",
+        "name": "инициализация при старте",
+        "info": "",
+        "x": 160,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "836c5f2a673914a4",
+        "type": "function",
+        "z": "ecf6b12423f1e7cb",
+        "name": "context init",
+        "func": "// начальная инициализация контекста\nglobal.payload          = global.payload || {};\nglobal.payload.drvhost  = global.payload.drvhost || 'http://127.0.0.1:19017/api/v1';\nglobal.payload.sc_count = global.payload.sc_count || 1;\nmsg = global;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 120,
+        "wires": [
+            [
+                "6e770835f97f8e87",
+                "08fd58e1a66b136a"
+            ]
+        ]
+    },
+    {
+        "id": "6e770835f97f8e87",
+        "type": "change",
+        "z": "ecf6b12423f1e7cb",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "#:(file)::payload.drvhost",
+                "tot": "global"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 610,
+        "y": 120,
+        "wires": [
+            [
+                "503b88fc93224a6f",
+                "461e598068983f30"
+            ]
+        ]
+    },
+    {
+        "id": "08fd58e1a66b136a",
+        "type": "change",
+        "z": "ecf6b12423f1e7cb",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "#:(file)::payload.sc_count",
+                "tot": "global"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 610,
+        "y": 160,
+        "wires": [
+            [
+                "e1670dc7e91bb9a8",
+                "bf2571fb3089240e"
+            ]
+        ]
+    },
+    {
+        "id": "503b88fc93224a6f",
+        "type": "debug",
+        "z": "ecf6b12423f1e7cb",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "e1670dc7e91bb9a8",
+        "type": "debug",
+        "z": "ecf6b12423f1e7cb",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "461e598068983f30",
+        "type": "ui-text-input",
+        "z": "ecf6b12423f1e7cb",
+        "group": "ab4df42e6de32b4e",
+        "name": "drvhost",
+        "label": "Адрес сервера оборудования",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "topic": "topic",
+        "topicType": "msg",
+        "mode": "text",
+        "tooltip": "",
+        "delay": 300,
+        "passthru": true,
+        "sendOnDelay": false,
+        "sendOnBlur": true,
+        "sendOnEnter": true,
+        "className": "",
+        "clearable": false,
+        "sendOnClear": false,
+        "icon": "",
+        "iconPosition": "left",
+        "iconInnerPosition": "inside",
+        "x": 920,
+        "y": 120,
+        "wires": [
+            [
+                "c3161eff109e76b4",
+                "c189f6469f70103a"
+            ]
+        ]
+    },
+    {
+        "id": "c3161eff109e76b4",
+        "type": "debug",
+        "z": "ecf6b12423f1e7cb",
+        "name": "debug 15",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "bf2571fb3089240e",
+        "type": "ui-text-input",
+        "z": "ecf6b12423f1e7cb",
+        "group": "ab4df42e6de32b4e",
+        "name": "sc_count",
+        "label": "Количество весов",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "topic": "topic",
+        "topicType": "msg",
+        "mode": "number",
+        "tooltip": "",
+        "delay": 300,
+        "passthru": true,
+        "sendOnDelay": false,
+        "sendOnBlur": true,
+        "sendOnEnter": true,
+        "className": "",
+        "clearable": false,
+        "sendOnClear": false,
+        "icon": "",
+        "iconPosition": "left",
+        "iconInnerPosition": "inside",
+        "x": 920,
+        "y": 160,
+        "wires": [
+            [
+                "569eb06b9cb74070",
+                "56d5dc3b1059f262"
+            ]
+        ]
+    },
+    {
+        "id": "569eb06b9cb74070",
+        "type": "debug",
+        "z": "ecf6b12423f1e7cb",
+        "name": "debug 16",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "c189f6469f70103a",
+        "type": "change",
+        "z": "ecf6b12423f1e7cb",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "#:(file)::payload.drvhost",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1180,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "56d5dc3b1059f262",
+        "type": "change",
+        "z": "ecf6b12423f1e7cb",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "#:(file)::payload.sc_count",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1190,
+        "y": 160,
         "wires": [
             []
         ]
