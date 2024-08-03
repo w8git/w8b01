@@ -424,7 +424,9 @@
         "x": 630,
         "y": 80,
         "wires": [
-            []
+            [
+                "188d698639f41225"
+            ]
         ]
     },
     {
@@ -457,9 +459,43 @@
         "y": 80,
         "wires": [
             [
-                "67f104891bac4664"
+                "67f104891bac4664",
+                "629e7b9d8325bb26"
             ]
         ]
+    },
+    {
+        "id": "188d698639f41225",
+        "type": "debug",
+        "z": "14b0dde0fa1ebbfd",
+        "name": "debug 17",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "629e7b9d8325bb26",
+        "type": "debug",
+        "z": "14b0dde0fa1ebbfd",
+        "name": "debug 18",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 140,
+        "wires": []
     },
     {
         "id": "77589d7ce0cc5889",
@@ -1032,7 +1068,7 @@
         "repeat": "",
         "crontab": "",
         "once": true,
-        "onceDelay": "2.2",
+        "onceDelay": "0.6",
         "topic": "",
         "payload": "version",
         "payloadType": "str",
@@ -1061,7 +1097,7 @@
         "repeat": "",
         "crontab": "",
         "once": true,
-        "onceDelay": "2.1",
+        "onceDelay": "0.5",
         "topic": "",
         "payload": "license",
         "payloadType": "str",
@@ -1077,16 +1113,16 @@
         "id": "304e9924d69f6674",
         "type": "debug",
         "z": "6db3e9ae8a30bde3",
-        "name": "debug 7",
+        "name": "debug VER",
         "active": true,
-        "tosidebar": false,
+        "tosidebar": true,
         "console": false,
         "tostatus": false,
         "complete": "payload",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 720,
+        "x": 730,
         "y": 360,
         "wires": []
     },
@@ -1096,7 +1132,7 @@
         "z": "6db3e9ae8a30bde3",
         "name": "debug 8",
         "active": true,
-        "tosidebar": false,
+        "tosidebar": true,
         "console": false,
         "tostatus": false,
         "complete": "payload",
@@ -1356,7 +1392,8 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 960,
@@ -1479,16 +1516,16 @@
         "id": "24be9f0f0d07a82d",
         "type": "function",
         "z": "6db3e9ae8a30bde3",
-        "name": "function 4",
-        "func": "msg.payload.ev_gr   = 'drv';\nmsg.payload.ev_type = 'info';\nmsg.payload.ev_msg  = 'Подключение к драйверу, в.' + msg.payload.value;\n\nreturn msg;",
+        "name": "запись в лог",
+        "func": "msg.payload.ev_gr   = 'drv';\nmsg.payload.ev_type = 'info';\nmsg.payload.ev_msg  = 'Подключение к серверу оборудования, в.' + msg.payload.value;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 640,
-        "y": 600,
+        "x": 670,
+        "y": 620,
         "wires": [
             [
                 "ad9c5ad0ebcabc63"
@@ -1500,8 +1537,8 @@
         "type": "subflow:7184709957891172",
         "z": "6db3e9ae8a30bde3",
         "name": "",
-        "x": 860,
-        "y": 600,
+        "x": 870,
+        "y": 620,
         "wires": [
             []
         ]
@@ -1521,7 +1558,7 @@
         "y": 120,
         "wires": [
             [
-                "836c5f2a673914a4"
+                "26ffc7d7c4cda4a9"
             ]
         ]
     },
@@ -1540,247 +1577,57 @@
         "type": "function",
         "z": "ecf6b12423f1e7cb",
         "name": "context init",
-        "func": "// начальная инициализация контекста\nglobal.payload          = global.payload || {};\nglobal.payload.drvhost  = global.payload.drvhost || 'http://127.0.0.1:19017/api/v1';\nglobal.payload.sc_count = global.payload.sc_count || 1;\nmsg = global;\nreturn msg;",
+        "func": "// начальная инициализация контекста\n\n// кэш показаний оборудования\nvar hw = global.get('hw');\n\nfor (let i = 0; i < 32; i++) {\n    hw.scales.push(\n        {\n            \"valid\": false,\n            \"stable\": false,\n            \"weight\": 0,\n            \"upd_at\": 0\n        }\n    );\n    hw.sensors.push(\n        {\n            \"value\": false,\n            \"upd_at\": 0\n        }\n    );\n    hw.trls.push(\n        {\n            \"value\": 0,\n            \"upd_at\": 0\n        }\n    );\n    hw.barriers.push(\n        {\n            \"state\": \"\",\n            \"upd_at\": 0\n        }\n    );\n    hw.rfids.push(\"\");\n    hw.textboards.push(\"\");\n    hw.scoreboards.push(\"\");\n}\n\nglobal.set('hw', hw);\nmsg = hw;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 330,
+        "x": 550,
         "y": 120,
         "wires": [
             [
-                "6e770835f97f8e87",
-                "08fd58e1a66b136a"
+                "2c5a3711842da647"
             ]
         ]
     },
     {
-        "id": "6e770835f97f8e87",
+        "id": "2c5a3711842da647",
+        "type": "debug",
+        "z": "ecf6b12423f1e7cb",
+        "name": "debug 19",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "26ffc7d7c4cda4a9",
         "type": "change",
         "z": "ecf6b12423f1e7cb",
         "name": "",
         "rules": [
             {
                 "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "#:(file)::payload.drvhost",
-                "tot": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 610,
-        "y": 120,
-        "wires": [
-            [
-                "503b88fc93224a6f",
-                "461e598068983f30"
-            ]
-        ]
-    },
-    {
-        "id": "08fd58e1a66b136a",
-        "type": "change",
-        "z": "ecf6b12423f1e7cb",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "#:(file)::payload.sc_count",
-                "tot": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 610,
-        "y": 160,
-        "wires": [
-            [
-                "e1670dc7e91bb9a8",
-                "bf2571fb3089240e"
-            ]
-        ]
-    },
-    {
-        "id": "503b88fc93224a6f",
-        "type": "debug",
-        "z": "ecf6b12423f1e7cb",
-        "name": "debug 13",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 820,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "e1670dc7e91bb9a8",
-        "type": "debug",
-        "z": "ecf6b12423f1e7cb",
-        "name": "debug 14",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 820,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "461e598068983f30",
-        "type": "ui-text-input",
-        "z": "ecf6b12423f1e7cb",
-        "group": "ab4df42e6de32b4e",
-        "name": "drvhost",
-        "label": "Адрес сервера оборудования",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "topic": "topic",
-        "topicType": "msg",
-        "mode": "text",
-        "tooltip": "",
-        "delay": 300,
-        "passthru": true,
-        "sendOnDelay": false,
-        "sendOnBlur": true,
-        "sendOnEnter": true,
-        "className": "",
-        "clearable": false,
-        "sendOnClear": false,
-        "icon": "",
-        "iconPosition": "left",
-        "iconInnerPosition": "inside",
-        "x": 920,
-        "y": 120,
-        "wires": [
-            [
-                "c3161eff109e76b4",
-                "c189f6469f70103a"
-            ]
-        ]
-    },
-    {
-        "id": "c3161eff109e76b4",
-        "type": "debug",
-        "z": "ecf6b12423f1e7cb",
-        "name": "debug 15",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1080,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "bf2571fb3089240e",
-        "type": "ui-text-input",
-        "z": "ecf6b12423f1e7cb",
-        "group": "ab4df42e6de32b4e",
-        "name": "sc_count",
-        "label": "Количество весов",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "topic": "topic",
-        "topicType": "msg",
-        "mode": "number",
-        "tooltip": "",
-        "delay": 300,
-        "passthru": true,
-        "sendOnDelay": false,
-        "sendOnBlur": true,
-        "sendOnEnter": true,
-        "className": "",
-        "clearable": false,
-        "sendOnClear": false,
-        "icon": "",
-        "iconPosition": "left",
-        "iconInnerPosition": "inside",
-        "x": 920,
-        "y": 160,
-        "wires": [
-            [
-                "569eb06b9cb74070",
-                "56d5dc3b1059f262"
-            ]
-        ]
-    },
-    {
-        "id": "569eb06b9cb74070",
-        "type": "debug",
-        "z": "ecf6b12423f1e7cb",
-        "name": "debug 16",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1080,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "c189f6469f70103a",
-        "type": "change",
-        "z": "ecf6b12423f1e7cb",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "#:(file)::payload.drvhost",
+                "p": "payload.drvhost",
                 "pt": "global",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1180,
-        "y": 120,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "56d5dc3b1059f262",
-        "type": "change",
-        "z": "ecf6b12423f1e7cb",
-        "name": "",
-        "rules": [
+                "to": "http://127.0.0.1:19017/api/v1",
+                "tot": "str"
+            },
             {
                 "t": "set",
-                "p": "#:(file)::payload.sc_count",
+                "p": "hw",
                 "pt": "global",
-                "to": "payload",
-                "tot": "msg"
+                "to": "{\"scales\":[],\"sensors\":[],\"trls\":[],\"barriers\":[],\"rfids\":[],\"textboards\":[],\"scoreboards\":[]}",
+                "tot": "json"
             }
         ],
         "action": "",
@@ -1788,10 +1635,12 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1190,
-        "y": 160,
+        "x": 340,
+        "y": 120,
         "wires": [
-            []
+            [
+                "836c5f2a673914a4"
+            ]
         ]
     }
 ]
