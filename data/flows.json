@@ -209,6 +209,43 @@
         "color": "#DDAA99"
     },
     {
+        "id": "f36b9cb553093c99",
+        "type": "subflow",
+        "name": "upd SCALES",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 60,
+                "y": 120,
+                "wires": [
+                    {
+                        "id": "1f6d76cb80c12905"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 780,
+                "y": 140,
+                "wires": [
+                    {
+                        "id": "aebbc2ac4090af02",
+                        "port": 0
+                    },
+                    {
+                        "id": "e110f91b4abf62cb",
+                        "port": 1
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
         "id": "872b6df0aee54332",
         "type": "global-config",
         "name": "global-config",
@@ -645,6 +682,83 @@
             [
                 "da1434a88a5672df"
             ]
+        ]
+    },
+    {
+        "id": "6d9cba9640691f30",
+        "type": "comment",
+        "z": "f36b9cb553093c99",
+        "name": "слежение за весами",
+        "info": "",
+        "x": 140,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "1f6d76cb80c12905",
+        "type": "function",
+        "z": "f36b9cb553093c99",
+        "name": "function 4",
+        "func": "// на вход приходит объект \n// payload: {\n//   \"weight\": 0,\n//   \"valid\": true,\n//   \"stable\": false\n// }\n//\nvar idx = msg.parts.index;\n\n// принимаем решение, нужно ли записывать в БД:\n// если данные изменились и прошло больше global.hw.scales_ch_interval\n// или данные не изменились и прошло больше global.hw.scales_unch_interval\n//\nvar w = msg.payload.weight;\nvar v = msg.payload.valid;\nvar s = msg.payload.stable;\nvar sc = global.get(\"hw.scales\")[idx];\nvar scdif = global.get(\"diffs.scales\");\n\nvar chgd = false;\nif (\n    (Math.abs(w - sc.weight) > scdif.delta) ||\n    (v != sc.valid) ||\n    (s != sc.stable), 1, 0\n) chgd = true;\nmsg.changed = chgd;\n\nvar t = Date.now() - sc.wr_at;\nmsg.elapsedtime = t;\n\nif ((chgd && (t > scdif.ch)) || (!chgd && (t > scdif.unch))) {\n    msg.res = 1;\n} else {\n    msg.res =0;\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "e110f91b4abf62cb"
+            ]
+        ]
+    },
+    {
+        "id": "e110f91b4abf62cb",
+        "type": "switch",
+        "z": "f36b9cb553093c99",
+        "name": "",
+        "property": "res",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 410,
+        "y": 120,
+        "wires": [
+            [
+                "aebbc2ac4090af02"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "aebbc2ac4090af02",
+        "type": "function",
+        "z": "f36b9cb553093c99",
+        "name": "function 5",
+        "func": "var idx = msg.parts.index;\n\nvar w = msg.payload.weight;\nvar v = msg.payload.valid;\nvar s = msg.payload.stable;\nvar sc = global.get(\"hw.scales\");\n\nsc[idx].weight = w;\nsc[idx].valid  = v;\nsc[idx].stable = s;\nsc[idx].wr_at = Date.now();\n\nglobal.set(\"hw.scales\", sc);\n\nmsg.updated = true;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 60,
+        "wires": [
+            []
         ]
     },
     {
@@ -1357,8 +1471,7 @@
         "y": 500,
         "wires": [
             [
-                "dadcc6092c54a57d",
-                "218e747138091b68"
+                "dadcc6092c54a57d"
             ]
         ]
     },
@@ -1381,23 +1494,6 @@
         "className": "",
         "x": 950,
         "y": 500,
-        "wires": []
-    },
-    {
-        "id": "218e747138091b68",
-        "type": "debug",
-        "z": "6db3e9ae8a30bde3",
-        "name": "debug 11",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 960,
-        "y": 440,
         "wires": []
     },
     {
@@ -1544,6 +1640,134 @@
         ]
     },
     {
+        "id": "5453df6dcec3a6b1",
+        "type": "comment",
+        "z": "6db3e9ae8a30bde3",
+        "name": "чтение лицензии и версии при старте",
+        "info": "",
+        "x": 170,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "adb9eb34e094f309",
+        "type": "comment",
+        "z": "6db3e9ae8a30bde3",
+        "name": "опрос оборудования",
+        "info": "",
+        "x": 140,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "889eb1f7781b351f",
+        "type": "inject",
+        "z": "6db3e9ae8a30bde3",
+        "name": "10-20",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"weight\":10,\"valid\":true,\"stable\":true},{\"weight\":20,\"valid\":true,\"stable\":true}]",
+        "payloadType": "json",
+        "x": 90,
+        "y": 800,
+        "wires": [
+            [
+                "e2d2050ff89b053b"
+            ]
+        ]
+    },
+    {
+        "id": "c9449ac24b468e21",
+        "type": "inject",
+        "z": "6db3e9ae8a30bde3",
+        "name": "100-20",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"weight\":100,\"valid\":true,\"stable\":true},{\"weight\":20,\"valid\":true,\"stable\":true}]",
+        "payloadType": "json",
+        "x": 90,
+        "y": 860,
+        "wires": [
+            [
+                "e2d2050ff89b053b"
+            ]
+        ]
+    },
+    {
+        "id": "825fa62242ec6ab4",
+        "type": "subflow:f36b9cb553093c99",
+        "z": "6db3e9ae8a30bde3",
+        "name": "",
+        "x": 570,
+        "y": 800,
+        "wires": [
+            [
+                "b0501f16ccd638ba"
+            ]
+        ]
+    },
+    {
+        "id": "e2d2050ff89b053b",
+        "type": "split",
+        "z": "6db3e9ae8a30bde3",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload",
+        "x": 310,
+        "y": 800,
+        "wires": [
+            [
+                "825fa62242ec6ab4"
+            ]
+        ]
+    },
+    {
+        "id": "b0501f16ccd638ba",
+        "type": "debug",
+        "z": "6db3e9ae8a30bde3",
+        "name": "debug 21",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 800,
+        "wires": []
+    },
+    {
         "id": "f30564bcca8395e5",
         "type": "inject",
         "z": "ecf6b12423f1e7cb",
@@ -1577,7 +1801,7 @@
         "type": "function",
         "z": "ecf6b12423f1e7cb",
         "name": "context init",
-        "func": "// начальная инициализация контекста\n\n// кэш показаний оборудования\nvar hw = global.get('hw');\n\nfor (let i = 0; i < 32; i++) {\n    hw.scales.push(\n        {\n            \"valid\": false,\n            \"stable\": false,\n            \"weight\": 0,\n            \"upd_at\": 0\n        }\n    );\n    hw.sensors.push(\n        {\n            \"value\": false,\n            \"upd_at\": 0\n        }\n    );\n    hw.trls.push(\n        {\n            \"value\": 0,\n            \"upd_at\": 0\n        }\n    );\n    hw.barriers.push(\n        {\n            \"state\": \"\",\n            \"upd_at\": 0\n        }\n    );\n    hw.rfids.push(\"\");\n    hw.textboards.push(\"\");\n    hw.scoreboards.push(\"\");\n}\n\nglobal.set('hw', hw);\nmsg = hw;\nreturn msg;",
+        "func": "// начальная инициализация контекста\n\n// кэш показаний оборудования\nvar hw = global.get('hw');\n\nfor (let i = 0; i < 32; i++) {\n    hw.scales.push(\n        {\n            \"valid\": false,\n            \"stable\": false,\n            \"weight\": 0,\n            \"upd_at\": 0,\n            \"wr_at\": 0\n        }\n    );\n    hw.sensors.push(\n        {\n            \"value\": false,\n            \"upd_at\": 0,\n            \"wr_at\": 0\n        }\n    );\n    hw.trls.push(\n        {\n            \"value\": 0,\n            \"upd_at\": 0,\n            \"wr_at\": 0\n        }\n    );\n    hw.barriers.push(\n        {\n            \"state\": \"\",\n            \"upd_at\": 0,\n            \"wr_at\": 0\n        }\n    );\n    hw.rfids.push(\"\");\n    hw.textboards.push(\"\");\n    hw.scoreboards.push(\"\");\n}\n\nglobal.set('hw', hw);\nmsg = hw;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1627,6 +1851,13 @@
                 "p": "hw",
                 "pt": "global",
                 "to": "{\"scales\":[],\"sensors\":[],\"trls\":[],\"barriers\":[],\"rfids\":[],\"textboards\":[],\"scoreboards\":[]}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "diffs",
+                "pt": "global",
+                "to": "{\"scales\":{\"delta\":50,\"ch\":500,\"unch\":5000},\"sensors\":{\"ch\":500,\"unch\":15000},\"trls\":{\"ch\":500,\"unch\":15000},\"barriers\":{\"ch\":500,\"unch\":15000}}",
                 "tot": "json"
             }
         ],
