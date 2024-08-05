@@ -2,7 +2,7 @@
     {
         "id": "91419fc3ca0e10e3",
         "type": "tab",
-        "label": "html",
+        "label": "Web",
         "disabled": false,
         "info": "",
         "env": []
@@ -443,6 +443,19 @@
         "disabled": "false"
     },
     {
+        "id": "7e971fe229f2e337",
+        "type": "ui-group",
+        "name": "Group Name",
+        "page": "2ddac257f0e96f9c",
+        "width": "12",
+        "height": "1",
+        "order": -1,
+        "showTitle": false,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
         "id": "67f104891bac4664",
         "type": "http request",
         "z": "14b0dde0fa1ebbfd",
@@ -765,9 +778,9 @@
         "id": "b3ca844d03d55cac",
         "type": "comment",
         "z": "91419fc3ca0e10e3",
-        "name": "Краткое описание",
+        "name": "Активация лицензии",
         "info": "Слежение за взвешиваниями на статических полноразмерных автовесах",
-        "x": 110,
+        "x": 120,
         "y": 60,
         "wires": []
     },
@@ -810,7 +823,7 @@
         "splitLayout": "",
         "className": "",
         "passthru": false,
-        "x": 140,
+        "x": 70,
         "y": 140,
         "wires": [
             [
@@ -832,8 +845,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 360,
-        "y": 80,
+        "x": 220,
+        "y": 100,
         "wires": []
     },
     {
@@ -848,8 +861,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 420,
-        "y": 200,
+        "x": 220,
+        "y": 180,
         "wires": [
             [
                 "55fa35850693fb3b",
@@ -862,8 +875,8 @@
         "type": "subflow:f63262b0a0cc45b0",
         "z": "91419fc3ca0e10e3",
         "name": "",
-        "x": 720,
-        "y": 200,
+        "x": 460,
+        "y": 180,
         "wires": [
             []
         ]
@@ -878,8 +891,8 @@
         ],
         "linkType": "static",
         "timeout": "30",
-        "x": 860,
-        "y": 280,
+        "x": 700,
+        "y": 100,
         "wires": [
             []
         ]
@@ -903,11 +916,178 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 650,
-        "y": 280,
+        "x": 470,
+        "y": 100,
         "wires": [
             [
                 "3c79b1b76da60755"
+            ]
+        ]
+    },
+    {
+        "id": "db4ab83445b667eb",
+        "type": "comment",
+        "z": "91419fc3ca0e10e3",
+        "name": "Просмотр журнала событий",
+        "info": "",
+        "x": 140,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "6922b246a01399aa",
+        "type": "ui-form",
+        "z": "91419fc3ca0e10e3",
+        "name": "Event form bounds",
+        "group": "7e971fe229f2e337",
+        "label": "",
+        "order": 0,
+        "width": "4",
+        "height": "1",
+        "options": [
+            {
+                "label": "Начало",
+                "key": "DLO",
+                "type": "date",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "",
+                "key": "TLO",
+                "type": "time",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Окончание",
+                "key": "DHI",
+                "type": "date",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "",
+                "key": "THI",
+                "type": "time",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "DLO": "",
+            "TLO": "",
+            "DHI": "",
+            "THI": ""
+        },
+        "payload": "",
+        "submit": "Прочитать",
+        "cancel": "Отмена",
+        "resetOnSubmit": false,
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": true,
+        "className": "",
+        "passthru": false,
+        "x": 110,
+        "y": 320,
+        "wires": [
+            [
+                "7c29e1d7a4b72021",
+                "0d5386c37dd00fa4"
+            ]
+        ]
+    },
+    {
+        "id": "7c29e1d7a4b72021",
+        "type": "debug",
+        "z": "91419fc3ca0e10e3",
+        "name": "debug 22",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "0d5386c37dd00fa4",
+        "type": "function",
+        "z": "91419fc3ca0e10e3",
+        "name": "Prepare SQL query",
+        "func": "var dlo = msg.payload['DLO'] + \" \" + msg.payload['TLO'];\nvar dhi = msg.payload['DHI'] + \" \" + msg.payload['THI'];\nmsg.topic = \"select e.event_at, e.event_type, e.event_group, e.event_msg from event_log e where e.event_at between '\" + dlo + \"' and '\" + dhi + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 360,
+        "wires": [
+            [
+                "1b6432b2f7acb2de",
+                "1989081efcbaefe1"
+            ]
+        ]
+    },
+    {
+        "id": "77141ffc0cf51806",
+        "type": "ui-table",
+        "z": "91419fc3ca0e10e3",
+        "group": "7e971fe229f2e337",
+        "name": "",
+        "label": "text",
+        "order": 0,
+        "width": "12",
+        "height": "1",
+        "maxrows": "25",
+        "passthru": false,
+        "autocols": true,
+        "showSearch": true,
+        "selectionType": "click",
+        "columns": [],
+        "x": 830,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1b6432b2f7acb2de",
+        "type": "debug",
+        "z": "91419fc3ca0e10e3",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 490,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "1989081efcbaefe1",
+        "type": "sqlite",
+        "z": "91419fc3ca0e10e3",
+        "mydb": "1b4560745b99d6d2",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "event log",
+        "x": 560,
+        "y": 360,
+        "wires": [
+            [
+                "77141ffc0cf51806"
             ]
         ]
     },
