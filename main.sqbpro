@@ -7,4 +7,4 @@
 	PRIMARY KEY(&quot;id&quot; AUTOINCREMENT)
 )</sql><sql name="SQL 5">CREATE INDEX IF NOT EXISTS &quot;event_log_at_idx&quot; ON &quot;event_log&quot; (
 	&quot;event_at&quot;	ASC
-);</sql><sql name="SQL 6">INSERT INTO &quot;event_log&quot; (&quot;event_at&quot;, &quot;event_group&quot;, &quot;event_type&quot;, &quot;event_msg&quot;) VALUES(datetime(&quot;now&quot;), 'group', 'type', 'msg')</sql><sql name="SQL 7">delete from event_log where id &lt; 234800</sql><current_tab id="5"/></tab_sql></sqlb_project>
+);</sql><sql name="SQL 6">INSERT INTO &quot;event_log&quot; (&quot;event_at&quot;, &quot;event_group&quot;, &quot;event_type&quot;, &quot;event_msg&quot;) VALUES(datetime(&quot;now&quot;), 'group', 'type', 'msg')</sql><sql name="SQL 7">delete from event_log where id &lt; 262600</sql><current_tab id="5"/></tab_sql></sqlb_project>
