@@ -194,7 +194,7 @@
         ],
         "out": [
             {
-                "x": 540,
+                "x": 680,
                 "y": 80,
                 "wires": [
                     {
@@ -671,7 +671,7 @@
         "sqlquery": "msg.topic",
         "sql": "",
         "name": "main",
-        "x": 430,
+        "x": 550,
         "y": 80,
         "wires": [
             []
@@ -682,19 +682,48 @@
         "type": "function",
         "z": "508d23eca865e758",
         "name": "function 3",
-        "func": "let ev_gr = msg.payload.ev_gr || 'unkn';\nlet err = msg.error || {};\nlet emsg = err.message || '??';\nlet src = err.source || {};\nlet eid = src.id || '?';\nlet etype = src.type || '?';\n\nmsg.topic = 'INSERT INTO \"event_log\" (\"event_at\",\"event_group\",\"event_type\",\"event_msg\") VALUES(datetime(\"now\"), $val1, $val2, $val3)';\nmsg.payload = [ev_gr, 'err', emsg + ' (id ' + eid + ', type ' + etype + ')'];\nreturn msg;",
+        "func": "let ev_gr = msg.payload.ev_gr || 'unkn';\nlet err = msg.error || {};\nlet emsg = err.message || '';\nlet src = err.source || {};\nlet eid = src.id || '?';\nlet etype = src.type || '?';\n\nif (emsg == '') {\n    msg.res = 0;\n} else {\n    msg.res = 1;\n}\nmsg.topic = 'INSERT INTO \"event_log\" (\"event_at\",\"event_group\",\"event_type\",\"event_msg\") VALUES(datetime(\"now\"), $val1, $val2, $val3)';\nmsg.payload = [ev_gr, 'err', emsg + ' (id ' + eid + ', type ' + etype + ')'];\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 240,
+        "x": 220,
+        "y": 80,
+        "wires": [
+            [
+                "836f3b1292b7b2ce"
+            ]
+        ]
+    },
+    {
+        "id": "836f3b1292b7b2ce",
+        "type": "switch",
+        "z": "508d23eca865e758",
+        "name": "непустые",
+        "property": "res",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 380,
         "y": 80,
         "wires": [
             [
                 "da1434a88a5672df"
-            ]
+            ],
+            []
         ]
     },
     {
@@ -1031,8 +1060,8 @@
         "y": 360,
         "wires": [
             [
-                "77141ffc0cf51806",
-                "1b6432b2f7acb2de"
+                "1b6432b2f7acb2de",
+                "1989081efcbaefe1"
             ]
         ]
     },
@@ -1048,11 +1077,40 @@
         "height": "1",
         "maxrows": "25",
         "passthru": false,
-        "autocols": true,
+        "autocols": false,
         "showSearch": true,
         "selectionType": "click",
-        "columns": [],
-        "x": 530,
+        "columns": [
+            {
+                "title": "Дата",
+                "key": "event_at",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Тип",
+                "key": "event_type",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Группа",
+                "key": "event_group",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Тест",
+                "key": "event_msg",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "x": 830,
         "y": 360,
         "wires": [
             []
@@ -1074,6 +1132,22 @@
         "x": 490,
         "y": 300,
         "wires": []
+    },
+    {
+        "id": "1989081efcbaefe1",
+        "type": "sqlite",
+        "z": "91419fc3ca0e10e3",
+        "mydb": "1b4560745b99d6d2",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "event log",
+        "x": 560,
+        "y": 360,
+        "wires": [
+            [
+                "77141ffc0cf51806"
+            ]
+        ]
     },
     {
         "id": "497045853487ebee",
@@ -1631,8 +1705,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 750,
-        "y": 500,
+        "x": 850,
+        "y": 440,
         "wires": [
             [
                 "dadcc6092c54a57d"
@@ -1656,8 +1730,8 @@
         "fontSize": 16,
         "color": "#717171",
         "className": "",
-        "x": 950,
-        "y": 500,
+        "x": 1230,
+        "y": 440,
         "wires": []
     },
     {
@@ -1687,7 +1761,7 @@
             [
                 "04aeacb41635b1d8",
                 "ec8d03ef123ae2b7",
-                "f64c8a6b08ce57a0"
+                "0d2291e4a331eef3"
             ]
         ]
     },
@@ -1696,24 +1770,23 @@
         "type": "delay",
         "z": "6db3e9ae8a30bde3",
         "name": "",
-        "pauseType": "delay",
+        "pauseType": "rate",
         "timeout": "10",
         "timeoutUnits": "seconds",
-        "rate": "1",
+        "rate": "3",
         "nbRateUnits": "1",
         "rateUnits": "second",
         "randomFirst": "1",
         "randomLast": "5",
         "randomUnits": "seconds",
-        "drop": false,
+        "drop": true,
         "allowrate": false,
         "outputs": 1,
-        "x": 300,
-        "y": 460,
+        "x": 320,
+        "y": 560,
         "wires": [
             [
-                "99e69eb2f47eacfc",
-                "3e39f247429d5ab7"
+                "f64c8a6b08ce57a0"
             ]
         ]
     },
@@ -1753,8 +1826,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 350,
-        "y": 540,
+        "x": 590,
+        "y": 560,
         "wires": [
             [
                 "0756407506ddb788"
@@ -1766,8 +1839,8 @@
         "type": "subflow:508d23eca865e758",
         "z": "6db3e9ae8a30bde3",
         "name": "",
-        "x": 340,
-        "y": 620,
+        "x": 980,
+        "y": 560,
         "wires": [
             []
         ]
@@ -1784,8 +1857,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 670,
-        "y": 620,
+        "x": 770,
+        "y": 500,
         "wires": [
             [
                 "ad9c5ad0ebcabc63"
@@ -1797,8 +1870,8 @@
         "type": "subflow:7184709957891172",
         "z": "6db3e9ae8a30bde3",
         "name": "",
-        "x": 870,
-        "y": 620,
+        "x": 970,
+        "y": 500,
         "wires": [
             []
         ]
@@ -1930,6 +2003,32 @@
         "x": 830,
         "y": 800,
         "wires": []
+    },
+    {
+        "id": "0d2291e4a331eef3",
+        "type": "trigger",
+        "z": "6db3e9ae8a30bde3",
+        "name": "",
+        "op1": "",
+        "op2": "1",
+        "op1type": "nul",
+        "op2type": "str",
+        "duration": "5",
+        "extend": true,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 290,
+        "y": 460,
+        "wires": [
+            [
+                "3e39f247429d5ab7",
+                "99e69eb2f47eacfc"
+            ]
+        ]
     },
     {
         "id": "f30564bcca8395e5",
